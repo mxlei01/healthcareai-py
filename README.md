@@ -109,7 +109,7 @@ Please see [our contribution guidelines](https://github.com/HealthCatalystSLC/he
 
 ### Workflow
 
-1. [Identify an issue that](https://github.com/HealthCatalystSLC/healthcareai-r/issues) suits your skill level
+1. [Identify an issue that](https://github.com/HealthCatalystSLC/healthcareai-py/issues) suits your skill level
     * Only look for issues in the Backlog category
     * If you're new to open source, please look for issues with the `bug low`, `help wanted`, or `docs` tags
     * Please reach out with questions on details and where to start
