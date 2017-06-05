@@ -231,6 +231,8 @@ class TrainedSupervisedModel(object):
         reason_col_names = ['Factor{}TXT'.format(i) for i in range(1, number_top_features + 1)]
 
         # Get a 2 dimensional list of all the factors
+        top_features = hcai_factors.top_k_features(prepared_dataframe, self.feature_model, k=number_top_features,
+                                                   categorical_vars = cat_var_map)
 
         # Verify that the number of factors matches the number of rows in the original dataframe.
         if len(top_features) != len(dataframe):

@@ -45,6 +45,7 @@ def top_k_features(dataframe, linear_model, k=3, categorical_vars=[]):
     # Copy linear model coefficients
     new_coefs = pd.DataFrame(linear_model.coef_, columns=dataframe.columns).copy()
 
+    df2 = dataframe.copy()
     # Associate a list of column indices to each categorical variable (corresponding to the levels)
     cat_cols = {}
     for cat_var in categorical_vars:
@@ -52,15 +53,21 @@ def top_k_features(dataframe, linear_model, k=3, categorical_vars=[]):
         # locate existing dummy variable columns
         for level in categorical_vars[cat_var]:
             var_name = cat_var + '.' + level
+            if var_name in df2.columns:
+                cat_cols[cat_var].append(df2.columns.get_loc(var_name))
         # add dummy variable for missing level of the variable
         for level in categorical_vars[cat_var]:
             var_name = cat_var + '.' + level
+            if var_name not in df2.columns:
+                df2[var_name] = 1 - df2.iloc[:, cat_cols[cat_var]].sum(axis=1)
                 # add coefficient for missing label and set to zero
                 new_coefs[var_name] = 0
+                cat_cols[cat_var].append(df2.columns.get_loc(var_name))
         # Shift dummy variable coefficients to have mean zero
         new_coefs.iloc[:,cat_cols[cat_var]] += -new_coefs.iloc[:,cat_cols[cat_var]].mean(axis=1)[0]
 
     # Multiply the values with the coefficients from the trained model and compute magnitudes of the products
+    step1 = pd.DataFrame(np.abs(df2.values * new_coefs.values), columns=df2.columns)
     step2 = step1.apply(descending_sort, axis=1)
 
     results = list(step2.values[:, :k])
