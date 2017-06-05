@@ -20,7 +20,7 @@ def descending_sort(row):
     return row.sort_values(ascending=False).index.values
 
 
-def top_k_features(dataframe, linear_model, k=3):
+def top_k_features(dataframe, linear_model, k=3, categorical_vars=[]):
     """
     Get lists of top features based on an already-fit linear model. Defaults to 3 top features.
     
@@ -42,8 +42,25 @@ def top_k_features(dataframe, linear_model, k=3):
         raise HealthcareAIError('You requested {} top features, which is more than the {} features from the original'
                                 ' model. Please choose {} or less.'.format(k, max_model_features, max_model_features))
 
+    # Copy linear model coefficients
+    new_coefs = pd.DataFrame(linear_model.coef_, columns=dataframe.columns).copy()
+
+    # Associate a list of column indices to each categorical variable (corresponding to the levels)
+    cat_cols = {}
+    for cat_var in categorical_vars:
+        cat_cols[cat_var] = []
+        # locate existing dummy variable columns
+        for level in categorical_vars[cat_var]:
+            var_name = cat_var + '.' + level
+        # add dummy variable for missing level of the variable
+        for level in categorical_vars[cat_var]:
+            var_name = cat_var + '.' + level
+                # add coefficient for missing label and set to zero
+                new_coefs[var_name] = 0
+        # Shift dummy variable coefficients to have mean zero
+        new_coefs.iloc[:,cat_cols[cat_var]] += -new_coefs.iloc[:,cat_cols[cat_var]].mean(axis=1)[0]
+
     # Multiply the values with the coefficients from the trained model and compute magnitudes of the products
-    step1 = pd.DataFrame(np.abs(dataframe.values * linear_model.coef_), columns=dataframe.columns)
     step2 = step1.apply(descending_sort, axis=1)
 
     results = list(step2.values[:, :k])

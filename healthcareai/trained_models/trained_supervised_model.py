@@ -207,6 +207,23 @@ class TrainedSupervisedModel(object):
         # Run the raw dataframe through the preparation process
         prepared_dataframe = self.prepare_and_subset(dataframe)
 
+        # Construct dataframe consisting of only the categorical variable columns
+        columns_to_dummify = dataframe.select_dtypes(include=[object, 'category'])
+        # Exclude the response variable column
+        for column1 in columns_to_dummify.columns:
+            contained = False
+            for column2 in prepared_dataframe.columns:
+                if str(column1) in str(column2):
+                    contained=True
+                    break
+            if not contained: # column corresponds to response variable
+                columns_to_dummify.drop(column1, axis=1, inplace=True)
+
+        # Create dictionary assigning to each categorical variable the list of possible labels
+        cat_var_map = {}
+        for cat_var in columns_to_dummify.columns:
+            cat_var_map[cat_var] = dataframe[cat_var].drop_duplicates().values
+
         # Create a new dataframe with the grain column from the original dataframe
         results = dataframe[[self.grain_column]]
 
@@ -214,7 +231,6 @@ class TrainedSupervisedModel(object):
         reason_col_names = ['Factor{}TXT'.format(i) for i in range(1, number_top_features + 1)]
 
         # Get a 2 dimensional list of all the factors
-        top_features = hcai_factors.top_k_features(prepared_dataframe, self.feature_model, k=number_top_features)
 
         # Verify that the number of factors matches the number of rows in the original dataframe.
         if len(top_features) != len(dataframe):
