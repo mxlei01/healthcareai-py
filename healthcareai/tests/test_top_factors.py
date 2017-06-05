@@ -10,7 +10,17 @@ class TestTopFactors(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """ Load a dataframe, train a linear model and prepare a prediction dataframe for assertions """
-        training_df = helpers.load_factors_dataframe()
+        factors_df = pd.DataFrame({'id':[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+                                   'age':[50, 60, 55, 75, 45, 35, 21, 18, 22, 25, 55, 33, 11, 14, 21],
+                                   'gender':['f', 'm', 'f', 'm', 'f', 'm', 'f', 'm','f', 'm', 'f', 'm', 'f', 'm', 'f'],
+                                   'weight':[250, 200, 190, 180, 170, 160, 180, 170, 160, 150, 140, 130, 120, 110, 100],
+                                   'a1c':[9, 8, 7, 8, 7, 9, 6, 5, 6, 5, 4, 5, 6, 5, 4],
+                                   'fbg':[220, 300, 190, 275, 250, 100, 90, 80, 70, 100, 70, 80, 90, 60, 60],
+                                   'has_diabetes':['Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'N', 'N', 'N', 'N', 'N', 'N','N', 'N',
+                                                   'N']},
+                                  columns=['id', 'age', 'gender', 'weight', 'a1c', 'fbg', 'has_diabetes'])
+
+        training_df = factors_df.copy()
 
         hcai = SupervisedModelTrainer(
             training_df,
@@ -23,7 +33,7 @@ class TestTopFactors(unittest.TestCase):
         cls.trained_lr = hcai.logistic_regression()
 
         # Load a new df for predicting
-        cls.prediction_df = helpers.load_factors_dataframe()
+        cls.prediction_df = factors_df.copy()
 
         # Create various outputs
         cls.factors = cls.trained_lr.make_factors(cls.prediction_df, number_top_features=3)
