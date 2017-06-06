@@ -43,7 +43,7 @@ def top_k_features(dataframe, linear_model, k=3, categorical_vars=[]):
                                 ' model. Please choose {} or less.'.format(k, max_model_features, max_model_features))
 
     # Copy linear model coefficients
-    new_coefs = pd.DataFrame(linear_model.coef_, columns=dataframe.columns).copy()
+    new_coefs = pd.DataFrame([linear_model.coef_], columns=dataframe.columns)
 
     df2 = dataframe.copy()
     # Associate a list of column indices to each categorical variable (corresponding to the levels)
@@ -52,12 +52,12 @@ def top_k_features(dataframe, linear_model, k=3, categorical_vars=[]):
         cat_cols[cat_var] = []
         # locate existing dummy variable columns
         for level in categorical_vars[cat_var]:
-            var_name = cat_var + '.' + level
+            var_name = str(cat_var) + '.' + str(level)
             if var_name in df2.columns:
                 cat_cols[cat_var].append(df2.columns.get_loc(var_name))
         # add dummy variable for missing level of the variable
         for level in categorical_vars[cat_var]:
-            var_name = cat_var + '.' + level
+            var_name = str(cat_var) + '.' + str(level)
             if var_name not in df2.columns:
                 df2[var_name] = 1 - df2.iloc[:, cat_cols[cat_var]].sum(axis=1)
                 # add coefficient for missing label and set to zero
