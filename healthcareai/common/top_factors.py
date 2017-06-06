@@ -43,7 +43,8 @@ def top_k_features(dataframe, linear_model, k=3, categorical_vars=[]):
                                 ' model. Please choose {} or less.'.format(k, max_model_features, max_model_features))
 
     # Copy linear model coefficients
-    new_coefs = pd.DataFrame([linear_model.coef_], columns=dataframe.columns)
+    num_cols = len(dataframe.columns)
+    new_coefs = pd.DataFrame(np.reshape(linear_model.coef_, (1,num_cols)), columns=dataframe.columns)
 
     df2 = dataframe.copy()
     # Associate a list of column indices to each categorical variable (corresponding to the levels)
