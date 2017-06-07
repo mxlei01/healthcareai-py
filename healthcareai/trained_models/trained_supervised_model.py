@@ -18,7 +18,8 @@ class TrainedSupervisedModel(object):
     """
     The meta-object that is created when training supervised models. 
     
-    This object contains:
+    This object contains
+    
         - trained estimator
         - trained linear estimator used for row level factor analysis
         - column metadata including transformed feature columns, grain & predicted column
@@ -39,6 +40,22 @@ class TrainedSupervisedModel(object):
                  test_set_class_labels,
                  test_set_actual,
                  metric_by_name):
+        """
+        Create an instance of a TrainedSupervisedModel
+        
+        Args:
+            model (sklearn.base.BaseEstimator): The fit scikit learn algorithm for prediction
+            feature_model (sklearn.base.BaseEstimator): The fit scikit learn algorithm for feature importance 
+            fit_pipeline (sklearn.pipeline.Pipeline): A fit pipeline for use on cleaning new raw data 
+            model_type (str): 'classification' or 'regression'
+            column_names (list): List of column names used as features
+            grain_column (str): Grain column (not used as a feature).
+            prediction_column (str): The name of the prediction column
+            test_set_predictions (list): y_prediction number (either probability of class or value)
+            test_set_class_labels (list): y_prediction class label if classification
+            test_set_actual (list): y_test
+            metric_by_name (dict): Metrics by name
+        """
         self.model = model
         self.feature_model = feature_model
         self.fit_pipeline = fit_pipeline
@@ -84,7 +101,7 @@ class TrainedSupervisedModel(object):
 
     @property
     def model_type(self):
-        """ Model type (regression or classification) """
+        """ Model type: 'regression' or 'classification' """
         return self._model_type
 
     @property
@@ -155,7 +172,7 @@ class TrainedSupervisedModel(object):
     def prepare_and_subset(self, dataframe):
         """
         Run the raw dataframe through the saved pipeline and return a dataframe that contains only the columns that were
-         in the original model.
+        in the original model.
         
         This prevents any unexpected changes to incoming columns from interfering with the predictions.
 
@@ -163,8 +180,7 @@ class TrainedSupervisedModel(object):
             dataframe (pandas.core.frame.DataFrame): Raw prediction dataframe
 
         Returns:
-            pandas.core.frame.DataFrame: A dataframe that has been run through the pipeline and subsetted to only the
-             columns the model expects.
+            pandas.core.frame.DataFrame: A dataframe that has been run through the pipeline and subsetted to only the columns the model expects.
         """
 
         try:
@@ -257,7 +273,7 @@ class TrainedSupervisedModel(object):
             number_top_features (int): Number of top features per row
 
         Returns:
-            pandas.core.frame.DataFrame:  
+            pandas.core.frame.DataFrame: Predictions with factors and grain column
         """
 
         # TODO Note this is inefficient since we are running the raw dataframe through the pipeline twice. Consider
@@ -399,6 +415,7 @@ class TrainedSupervisedModel(object):
         Prints out ROC details and returns them with cutoffs.
         
         Note this is a simple subset of TrainedSupervisedModel.metrics()
+        
         Args:
             print_output (bool): True (default) to print a table of output.
 
@@ -511,11 +528,12 @@ class TrainedSupervisedModel(object):
 def get_estimator_from_trained_supervised_model(trained_supervised_model):
     """
     Given an instance of a TrainedSupervisedModel, return the main estimator, regardless of random search
+    
     Args:
-        trained_supervised_model (TrainedSupervisedModel): 
+        trained_supervised_model (TrainedSupervisedModel):
 
     Returns:
-        sklearn.base.BaseEstimator: 
+        sklearn.base.BaseEstimator: The scikit learn estimator
 
     """
     # Validate input is a TSM
@@ -541,10 +559,10 @@ def tsm_classification_comparison_plots(trained_supervised_models, plot_type='RO
     
     Args:
         plot_type (str): 'ROC' (default) or 'PR' 
-        trained_supervised_models (list | TrainedSupervisedModel): a single or list of TrainedSupervisedModels 
+        trained_supervised_models (TrainedSupervisedModel): a single or iterable containing TrainedSupervisedModels 
         save (bool): Save the plot to a file
     """
-    # Input validation plus switching
+    # Input validation and dispatch
     if plot_type == 'ROC':
         plotter = hcai_model_evaluation.roc_plot_from_thresholds
     elif plot_type == 'PR':
@@ -552,26 +570,23 @@ def tsm_classification_comparison_plots(trained_supervised_models, plot_type='RO
     else:
         raise HealthcareAIError('Please choose either plot_type=\'ROC\' or plot_type=\'PR\'')
 
-    metrics_by_model = []
+    metrics_by_model = {}
 
-    if isinstance(trained_supervised_models, TrainedSupervisedModel):
-        entry = {trained_supervised_models.algorithm_name: trained_supervised_models.metrics}
-        metrics_by_model.append(entry)
-    elif isinstance(trained_supervised_models, list):
+    try:
         for model in trained_supervised_models:
             if not isinstance(model, TrainedSupervisedModel):
-                raise HealthcareAIError(
-                    'One of the objects in the list is not a TrainedSupervisedModel ({})'.format(model))
+                raise HealthcareAIError('One of the objects in the list is not a TrainedSupervisedModel ({})'
+                                        .format(model))
+            metrics_by_model[model.algorithm_name] = model.metrics
+    except TypeError:
+        # input is not iterable (assume single TSM)
+        if not isinstance(trained_supervised_models, TrainedSupervisedModel):
+            raise HealthcareAIError('Input is not a TrainedSupervisedModel ({})'.format(trained_supervised_models))
+        metrics_by_model[trained_supervised_models.algorithm_name] = trained_supervised_models.metrics
 
-            entry = {model.algorithm_name: model.metrics}
-
-            metrics_by_model.append(entry)
-
-            # TODO so, you could check for different GUIDs that could be saved in each TSM!
-            # The assumption here is that each TSM was trained on the same train test split,
-            # which happens when instantiating SupervisedModelTrainer
-    else:
-        raise HealthcareAIError('This requires either a single TrainedSupervisedModel or a list of them')
+        # TODO so, you could check for different GUIDs that could be saved in each TSM!
+        # The assumption here is that each TSM was trained on the same train test split,
+        # which happens when instantiating SupervisedModelTrainer
 
     # Plot with the selected plotter
     plotter(metrics_by_model, save=save, debug=False)
@@ -589,7 +604,3 @@ def plot_rf_features_from_tsm(trained_supervised_model, x_train, save=False):
     model = get_estimator_from_trained_supervised_model(trained_supervised_model)
     column_names = trained_supervised_model.column_names
     hcai_model_evaluation.plot_random_forest_feature_importance(model, x_train, column_names, save=save)
-
-
-if __name__ == "__main__":
-    pass

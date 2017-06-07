@@ -1,5 +1,6 @@
 import os
 import sklearn
+import itertools
 
 import numpy as np
 import pandas as pd
@@ -142,9 +143,18 @@ def calculate_binary_classification_metrics(trained_sklearn_estimator, x_test, y
 
 
 def roc_plot_from_thresholds(roc_thresholds_by_model, save=False, debug=False):
+    """
+    From a given dictionary of thresholds by model, create a ROC curve for each model
+
+    Args:
+        pr_thresholds_by_model (dict): A dictionary of ROC thresholds by model name.
+        save (bool): False to display the image (default) or True to save it (but not display it)
+        debug (bool): verbost output.
+    """
     # TODO consolidate this and PR plotter into 1 function
     # TODO make the colors randomly generated from rgb values
-    colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
+    # Cycle through the colors list
+    color_iterator = itertools.cycle(['b', 'g', 'r', 'c', 'm', 'y', 'k'])
     # Initialize plot
     plt.figure()
     plt.xlabel('False Positive Rate (FPR)')
@@ -154,14 +164,9 @@ def roc_plot_from_thresholds(roc_thresholds_by_model, save=False, debug=False):
     plt.ylim([0.0, 1.05])
     plt.plot([0, 1], [0, 1], linestyle=DIAGONAL_LINE_STYLE, color=DIAGONAL_LINE_COLOR)
 
-    # TODO hack to convert to array if it is a single dictionary
-    if isinstance(roc_thresholds_by_model, dict):
-        roc_thresholds_by_model = [roc_thresholds_by_model]
-
     # Calculate and plot for each model
-    for i, model in enumerate(roc_thresholds_by_model):
+    for color, (model_name, metrics) in zip(color_iterator, roc_thresholds_by_model.items()):
         # Extract model name and metrics from dictionary
-        model_name, metrics = model.popitem()
         roc_auc = metrics['roc_auc']
         tpr = metrics['true_positive_rates']
         fpr = metrics['false_positive_rates']
@@ -172,15 +177,12 @@ def roc_plot_from_thresholds(roc_thresholds_by_model, save=False, debug=False):
             print('{} model:'.format(model_name))
             print(pd.DataFrame({'FPR': fpr, 'TPR': tpr}))
 
-        # TODO deal with colors ...
         # plot the line
-        temp_color = colors[i]
         label = '{} (ROC AUC = {})'.format(model_name, round(roc_auc, 2))
-        plt.plot(fpr, tpr, color=temp_color, label=label)
-        plt.plot([best_false_positive_rate], [best_true_positive_rate], marker='*', markersize=10, color=temp_color)
+        plt.plot(fpr, tpr, color=color, label=label)
+        plt.plot([best_false_positive_rate], [best_true_positive_rate], marker='*', markersize=10, color=color)
 
     plt.legend(loc="lower right")
-    # TODO: add cutoff associated with FPR/TPR
 
     if save:
         plt.savefig('ROC.png')
@@ -191,9 +193,18 @@ def roc_plot_from_thresholds(roc_thresholds_by_model, save=False, debug=False):
 
 
 def pr_plot_from_thresholds(pr_thresholds_by_model, save=False, debug=False):
+    """
+    From a given dictionary of thresholds by model, create a PR curve for each model
+    
+    Args:
+        pr_thresholds_by_model (dict): A dictionary of PR thresholds by model name.
+        save (bool): False to display the image (default) or True to save it (but not display it)
+        debug (bool): verbost output.
+    """
     # TODO consolidate this and PR plotter into 1 function
     # TODO make the colors randomly generated from rgb values
-    colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
+    # Cycle through the colors list
+    color_iterator = itertools.cycle(['b', 'g', 'r', 'c', 'm', 'y', 'k'])
     # Initialize plot
     plt.figure()
     plt.xlabel('Recall')
@@ -203,14 +214,9 @@ def pr_plot_from_thresholds(pr_thresholds_by_model, save=False, debug=False):
     plt.ylim([0.0, 1.05])
     plt.plot([0, 1], [1, 0], linestyle=DIAGONAL_LINE_STYLE, color=DIAGONAL_LINE_COLOR)
 
-    # TODO hack to convert to array if it is a single dictionary
-    if isinstance(pr_thresholds_by_model, dict):
-        pr_thresholds_by_model = [pr_thresholds_by_model]
-
     # Calculate and plot for each model
-    for i, model in enumerate(pr_thresholds_by_model):
+    for color, (model_name, metrics) in zip(color_iterator, pr_thresholds_by_model.items()):
         # Extract model name and metrics from dictionary
-        model_name, metrics = model.popitem()
         pr_auc = metrics['pr_auc']
         precision = metrics['precisions']
         recall = metrics['recalls']
@@ -222,13 +228,11 @@ def pr_plot_from_thresholds(pr_thresholds_by_model, save=False, debug=False):
             print(pd.DataFrame({'Recall': recall, 'Precision': precision}))
 
         # plot the line
-        temp_color = colors[i]
         label = '{} (PR AUC = {})'.format(model_name, round(pr_auc, 2))
-        plt.plot(recall, precision, color=temp_color, label=label)
-        plt.plot([best_recall], [best_precision], marker='*', markersize=10, color=temp_color)
+        plt.plot(recall, precision, color=color, label=label)
+        plt.plot([best_recall], [best_precision], marker='*', markersize=10, color=color)
 
     plt.legend(loc="lower left")
-    # TODO: add cutoff associated with P/R
 
     if save:
         plt.savefig('PR.png')

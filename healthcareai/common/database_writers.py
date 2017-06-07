@@ -18,6 +18,7 @@ from healthcareai.common.healthcareai_error import HealthcareAIError
 def write_to_db_agnostic(engine, table, dataframe, schema=None):
     """
     Given an sqlalchemy engine or sqlite connection, writes a dataframe to a table
+    
     Args:
         engine (sqlalchemy.engine.base.Engine, sqlite3.Connection): the database engine or connection object
         table (str): destination table
@@ -63,7 +64,3 @@ def write_to_db_agnostic(engine, table, dataframe, schema=None):
         Please verify that the table [{}] exists.\n
         Was your test insert successful earlier?\n
         If so, what has changed with your database/table/entity since then?""".format(table, table))
-
-
-if __name__ == "__main__":
-    pass
