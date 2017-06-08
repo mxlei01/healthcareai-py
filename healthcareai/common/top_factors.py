@@ -20,7 +20,7 @@ def descending_sort(row):
     return row.sort_values(ascending=False).index.values
 
 
-def top_k_features(dataframe, linear_model, k=3, categorical_vars=[]):
+def top_k_features(dataframe, linear_model, k=3, categorical_vars=None):
     """
     Get lists of top features based on an already-fit linear model. Defaults to 3 top features.
     
@@ -48,24 +48,25 @@ def top_k_features(dataframe, linear_model, k=3, categorical_vars=[]):
 
     df2 = dataframe.copy()
     # Associate a list of column indices to each categorical variable (corresponding to the levels)
-    cat_cols = {}
-    for cat_var in categorical_vars:
-        cat_cols[cat_var] = []
-        # locate existing dummy variable columns
-        for level in categorical_vars[cat_var]:
-            var_name = str(cat_var) + '.' + str(level)
-            if var_name in df2.columns:
-                cat_cols[cat_var].append(df2.columns.get_loc(var_name))
-        # add dummy variable for missing level of the variable
-        for level in categorical_vars[cat_var]:
-            var_name = str(cat_var) + '.' + str(level)
-            if var_name not in df2.columns:
-                df2[var_name] = 1 - df2.iloc[:, cat_cols[cat_var]].sum(axis=1)
-                # add coefficient for missing label and set to zero
-                new_coefs[var_name] = 0
-                cat_cols[cat_var].append(df2.columns.get_loc(var_name))
-        # Shift dummy variable coefficients to have mean zero
-        new_coefs.iloc[:,cat_cols[cat_var]] += -new_coefs.iloc[:,cat_cols[cat_var]].mean(axis=1)[0]
+    if categorical_vars is  not None:
+        cat_cols = {}
+        for cat_var in categorical_vars:
+            cat_cols[cat_var] = []
+            # locate existing dummy variable columns
+            for level in categorical_vars[cat_var]:
+                var_name = str(cat_var) + '.' + str(level)
+                if var_name in df2.columns:
+                    cat_cols[cat_var].append(df2.columns.get_loc(var_name))
+            # add dummy variable for missing level of the variable
+            for level in categorical_vars[cat_var]:
+                var_name = str(cat_var) + '.' + str(level)
+                if var_name not in df2.columns:
+                    df2[var_name] = 1 - df2.iloc[:, cat_cols[cat_var]].sum(axis=1)
+                    # add coefficient for missing label and set to zero
+                    new_coefs[var_name] = 0
+                    cat_cols[cat_var].append(df2.columns.get_loc(var_name))
+            # Shift dummy variable coefficients to have mean zero
+            new_coefs.iloc[:,cat_cols[cat_var]] += -new_coefs.iloc[:,cat_cols[cat_var]].mean(axis=1)[0]
 
     # Multiply the values with the coefficients from the trained model and compute magnitudes of the products
     step1 = pd.DataFrame(np.abs(df2.values * new_coefs.values), columns=df2.columns)
