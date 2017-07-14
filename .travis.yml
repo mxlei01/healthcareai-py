@@ -23,6 +23,8 @@ before_install:
 - pip install cython
 - pip3 install --upgrade tensorflow
 install:
+- conda update --yes conda
+- conda install -c conda-forge tensorflow
 - pip install -r dev-requirements.txt
 - pip install .
 script: python setup.py nosetests
