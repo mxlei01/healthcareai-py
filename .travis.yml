@@ -21,6 +21,7 @@ before_install:
 - sudo apt-get install unixodbc-dev
 - sudo pip install pyodbc
 - pip install cython
+- pip3 install --upgrade tensorflow
 install:
 - pip install -r dev-requirements.txt
 - pip install .
