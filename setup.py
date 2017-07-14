@@ -37,7 +37,7 @@ setup(name='healthcareai',
           'scikit-learn>=0.18',
           'imbalanced-learn>=0.2.1',
           'sqlalchemy>=1.1.5', 'sklearn',
-          'tensorflow==1.1.0'
+          'tensorflow>=1.1.0'
       ],
       package_data={
           'examples': ['*.py', '*.ipynb']
