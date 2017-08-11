@@ -28,6 +28,9 @@ class SupervisedModelTrainer(object):
         self.predicted_column = predicted_column
         self.grain_column = grain_column
 
+        # Validate the type of model, dataframe, and the predicted column before feeding the data to the pipeline
+        self.model_input_validate(dataframe, model_type, predicted_column)
+
         # Build the pipeline
         # TODO This pipeline may drop nulls in prediction rows if impute=False
         # TODO See https://github.com/HealthCatalyst/healthcareai-py/issues/276
