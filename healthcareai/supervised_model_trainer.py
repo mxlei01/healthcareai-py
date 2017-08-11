@@ -1,6 +1,9 @@
+import numpy as np
+
 import healthcareai.pipelines.data_preparation as hcai_pipelines
 import healthcareai.trained_models.trained_supervised_model as hcai_tsm
 from healthcareai.advanced_supvervised_model_trainer import AdvancedSupervisedModelTrainer
+from healthcareai.common.healthcareai_error import HealthcareAIError
 
 
 class SupervisedModelTrainer(object):
@@ -47,6 +50,41 @@ class SupervisedModelTrainer(object):
     def clean_dataframe(self):
         """ Returns the dataframe after the preparation pipeline (imputation and such) """
         return self._advanced_trainer.dataframe
+
+    def model_input_validate(self, dataframe, model_type, predicted_column):
+        """ Validate the dataset with the model_type and predicted_column.
+
+        Args:
+            dataframe (pandas.core.frame.DataFrame): The training data in a pandas dataframe
+            model_type (str): the trainer type - 'classification' or 'regression'
+            predicted_column (str): The name of the prediction column
+
+        Returns:
+            None
+
+        """
+        predicted_column_values = dataframe[predicted_column].dropna().unique()
+        if model_type == "classification":
+            # If the model type is classification, and if the predicted column is non binary, or the binary column
+            # values are not 'N' and 'Y' then raise an error
+            if len(predicted_column_values) > 2:
+                raise HealthcareAIError("For model_type=classification, the prediction column should be binary, "
+                                        "since it contains %s, which is more than 2 values" % predicted_column_values)
+            elif len(predicted_column_values) == 1:
+                raise HealthcareAIError("For model_type=classification, the prediction column should be binary, "
+                                        "since it contains %s, which is equal to 1 value" % predicted_column_values)
+            elif set(predicted_column_values) != {"Y", "N"}:
+                raise HealthcareAIError("For model_type=classification, the prediction column should only hold N or Y, "
+                                        "since it contains %s, which is not Y or N" % predicted_column_values)
+        elif model_type == "regression":
+            # If the model type is regression, and if the predicted column is binary, or if the data contains
+            # non numeric data
+            if len(predicted_column_values) <= 2:
+                raise HealthcareAIError("For model_type=regression, the prediction column should not be binary, "
+                                        "since it contains %s, which less or equal to 2 values" % predicted_column_values)
+            if not dataframe[predicted_column].apply(np.isreal).unique()[0]:
+                raise HealthcareAIError("For model_type=regression, all values in the prediction column should only be "
+                                        "numerical data")
 
     def random_forest(self, save_plot=False):
         # TODO Convenience method. Probably not needed?
