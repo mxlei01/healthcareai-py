@@ -66,8 +66,6 @@ class DataFrameConvertTargetToBinary(TransformerMixin):
         return self
 
     def transform(self, X, y=None):
-        # TODO: put try/catch here when type = class and predictor is numeric
-        # TODO this makes healthcareai only handle N/Y in pred column
         if self.model_type == 'classification':
             # Turn off warning around replace
             pd.options.mode.chained_assignment = None  # default='warn'

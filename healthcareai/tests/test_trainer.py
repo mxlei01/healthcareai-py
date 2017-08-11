@@ -120,6 +120,64 @@ class TestSupervisedModelTrainer(unittest.TestCase):
         # Try the ROC plot
         self.assertRaises(HealthcareAIError, trained_linear_model.roc_plot)
 
+    def test_regression_binary(self):
+        training_df = hcai_datasets.load_diabetes()
+
+        training_df.drop(['PatientID'], axis=1, inplace=True)
+
+        self.assertRaises(HealthcareAIError, SupervisedModelTrainer, **{"dataframe": training_df,
+                                                                        "predicted_column": 'ThirtyDayReadmitFLG',
+                                                                        "model_type": 'regression',
+                                                                        "grain_column": 'PatientEncounterID',
+                                                                        "impute": True,
+                                                                        "verbose": False})
+
+    def test_regression_non_numerical(self):
+        training_df = hcai_datasets.load_diabetes()
+
+        training_df.drop(['PatientID'], axis=1, inplace=True)
+        training_df['SystolicBPNBR'] = training_df['SystolicBPNBR'].astype(str)
+
+        self.assertRaises(HealthcareAIError, SupervisedModelTrainer, **{"dataframe": training_df,
+                                                                        "predicted_column": 'ThirtyDayReadmitFLG',
+                                                                        "model_type": 'regression',
+                                                                        "grain_column": 'PatientEncounterID',
+                                                                        "impute": True,
+                                                                        "verbose": False})
+
+
+    def test_classification_non_binary(self):
+        training_df = hcai_datasets.load_diabetes()
+
+        training_df.drop(['PatientID'], axis=1, inplace=True)
+
+        self.assertRaises(HealthcareAIError, SupervisedModelTrainer, **{"dataframe": training_df,
+                                                                        "predicted_column": 'A1CNBR',
+                                                                        "model_type": 'classification',
+                                                                        "grain_column": 'PatientEncounterID',
+                                                                        "impute": True,
+                                                                        "verbose": False})
+
+        training_df["singular"] = "a"
+
+        self.assertRaises(HealthcareAIError, SupervisedModelTrainer, **{"dataframe": training_df,
+                                                                        "predicted_column": 'singular',
+                                                                        "model_type": 'classification',
+                                                                        "grain_column": 'PatientEncounterID',
+                                                                        "impute": True,
+                                                                        "verbose": False})
+
+    def test_classification_N_Y(self):
+        training_df = hcai_datasets.load_diabetes()
+
+        training_df.drop(['PatientID'], axis=1, inplace=True)
+
+        self.assertRaises(HealthcareAIError, SupervisedModelTrainer, **{"dataframe": training_df,
+                                                                        "predicted_column": 'A1CNBR',
+                                                                        "model_type": 'classification',
+                                                                        "grain_column": 'PatientEncounterID',
+                                                                        "impute": True,
+                                                                        "verbose": False})
 
 @contextmanager
 def captured_output():
