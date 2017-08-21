@@ -37,7 +37,7 @@ def validate_catalyst_prediction_sam_connection(server, destination_table, grain
     # TODO ... Or simulate a rollback by inserting a few GUIDs then deleting them (hoping they are unique)
 
     # First, check the connection by inserting test data (and rolling back)
-    db_connection = pyodbc.connect("""DRIVER={SQL Server Native Client 11.0};
+    db_connection = pyodbc.connect("""DRIVER={ODBC Driver 13 for SQL Server};
                                SERVER=""" + server + """;
                                Trusted_Connection=yes;""")
 

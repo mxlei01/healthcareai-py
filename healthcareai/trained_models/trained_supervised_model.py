@@ -358,7 +358,8 @@ class TrainedSupervisedModel(object):
 
         return factors_and_predictions_df
 
-    def predict_to_catalyst_sam(self, dataframe, server, database, table, schema=None, predicted_column_name=None):
+    def predict_to_catalyst_sam(self, dataframe, server, database, table, schema=None, predicted_column_name=None,
+                                userid=None, password=None, secure_connection=True):
         """
         Given a dataframe you want predictions on, make predictions and save them to a catalyst-specific EDW table.
         
@@ -384,7 +385,8 @@ class TrainedSupervisedModel(object):
         sam_df.rename(columns={'Prediction': predicted_column_name}, inplace=True)
 
         try:
-            engine = hcai_db.build_mssql_engine_using_trusted_connections(server, database)
+            engine = hcai_db.build_mssql_engine_using_trusted_connections(server, database, userid, password,
+                                                                          secure_connection)
             healthcareai.common.database_writers.write_to_db_agnostic(engine, table, sam_df, schema=schema)
         except HealthcareAIError as hcaie:
             # Run validation and alert user
