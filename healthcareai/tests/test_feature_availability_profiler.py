@@ -36,7 +36,7 @@ class TestFeatureAvailabilityProfiler(unittest.TestCase):
                                               plot_flag= False,
                                               list_flag=False)
 
-        self.assertTrue(dfOut.iloc[-1,1] > 65 and dfOut.iloc[-1,1] < 85)
+        self.assertTrue(dfOut.iloc[-1, 1] > 65 and dfOut.iloc[-1, 1] < 85)
         self.assertTrue(dfOut.iloc[-1, 0] > 40 and dfOut.iloc[-1, 0] < 60)
 
     def tearDown(self):

@@ -23,14 +23,8 @@ class AdvancedSupervisedModelTrainer(object):
     metrics.
     """
 
-    def __init__(
-        self,
-        dataframe,
-        model_type,
-        predicted_column,
-        grain_column=None,
-        original_column_names=None,
-        verbose=False):
+    def __init__(self, dataframe, model_type, predicted_column,
+                 grain_column=None, original_column_names=None, verbose=False):
         """     
         Creates an instance of AdvancedSupervisedModelTrainer.
         
