@@ -19,6 +19,7 @@ skip_mssql_tests = "SKIP_MSSQL_TESTS" in os.environ and os.environ["SKIP_MSSQL_T
 
 
 class TestValidateDestinationTableConnection(unittest.TestCase):
+
     """ Note that testing this is very tricky since there are two ways to raise a HealtcareAIError. """
     # TODO switch to SQLITE
 

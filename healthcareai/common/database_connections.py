@@ -49,7 +49,7 @@ def build_mssql_engine_using_trusted_connections(server, database):
     Given a server and database name, build a Trusted Connection MSSQL database engine. NOTE: Requires `pyodbc`
     
     Args:
-        server (str): Server name 
+        server (str): Server name
         database (str): Database name
 
     Returns:

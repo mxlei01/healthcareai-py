@@ -23,15 +23,9 @@ class AdvancedSupervisedModelTrainer(object):
     metrics.
     """
 
-    def __init__(
-        self,
-        dataframe,
-        model_type,
-        predicted_column,
-        grain_column=None,
-        original_column_names=None,
-        verbose=False):
-        """     
+    def __init__(self, dataframe, model_type, predicted_column, grain_column=None,
+                 original_column_names=None, verbose=False):
+        """
         Creates an instance of AdvancedSupervisedModelTrainer.
         
         Args:
@@ -67,7 +61,7 @@ class AdvancedSupervisedModelTrainer(object):
     @property
     def is_classification(self):
         """
-        Returns True if trainer is set up for classification 
+        Returns True if trainer is set up for classification
         
         Easy check to consolidate magic strings in all the model type switches.
         """
@@ -76,7 +70,7 @@ class AdvancedSupervisedModelTrainer(object):
     @property
     def is_regression(self):
         """
-        Returns True if trainer is set up for regression 
+        Returns True if trainer is set up for regression
         
         Easy check to consolidate magic strings in all the model type switches.
         """
@@ -203,7 +197,7 @@ class AdvancedSupervisedModelTrainer(object):
                             randomized_search=True,
                             number_iteration_samples=10):
         """
-        A light wrapper for Sklearn's logistic regression that performs randomized search over an overideable default 
+        A light wrapper for Sklearn's logistic regression that performs randomized search over an overideable default
         hyperparameter grid.
 
         Args:
@@ -214,7 +208,7 @@ class AdvancedSupervisedModelTrainer(object):
                 hyperparameter space. More may lead to a better model, but will take longer.
 
         Returns:
-            TrainedSupervisedModel: 
+            TrainedSupervisedModel:
         """
         self.validate_classification('Logistic Regression')
         if hyperparameter_grid is None:
@@ -315,7 +309,7 @@ class AdvancedSupervisedModelTrainer(object):
                 hyperparameter space. More may lead to a better model, but will take longer.
 
         Returns:
-            TrainedSupervisedModel: 
+            TrainedSupervisedModel:
         """
         self.validate_classification('KNN')
         if hyperparameter_grid is None:
@@ -353,7 +347,7 @@ class AdvancedSupervisedModelTrainer(object):
                 hyperparameter space. More may lead to a better model, but will take longer.
 
         Returns:
-            TrainedSupervisedModel: 
+            TrainedSupervisedModel:
         """
         self.validate_classification('Random Forest Classifier')
         if hyperparameter_grid is None:
@@ -392,7 +386,7 @@ class AdvancedSupervisedModelTrainer(object):
                 hyperparameter space. More may lead to a better model, but will take longer.
 
         Returns:
-            TrainedSupervisedModel: 
+            TrainedSupervisedModel:
         """
         self.validate_regression('Random Forest Regressor')
         if hyperparameter_grid is None:

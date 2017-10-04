@@ -20,7 +20,7 @@ def validate_catalyst_prediction_sam_connection(server, destination_table, grain
     Args:
         server (str): The name of the MSSQL server
         destination_table (str): The name of the destination table for predictions
-        grain_column (str): The name of the grain column 
+        grain_column (str): The name of the grain column
         predicted_column_name (str): The name of the prediction column ('predictedprobNBR' for classification, or
             'predictedvalueNBR' for regression)
 

@@ -84,6 +84,7 @@ class AzureBlobStorageHelper:
 class AzureBlobStorageHelperError(Exception):
 
     """Error to raise clear messages to users."""
+
     def __init__(self, message):
         self.message = message
 
