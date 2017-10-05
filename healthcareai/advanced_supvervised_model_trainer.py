@@ -18,10 +18,8 @@ SUPPORTED_MODEL_TYPES = ['classification', 'regression']
 
 
 class AdvancedSupervisedModelTrainer(object):
-    """
-    This class helps create a model using several common classifiers and regressors, both of which report appropiate
-    metrics.
-    """
+
+    """ Create a model using common classifiers and regressors, both of which report appropriate metrics."""
 
     def __init__(self, dataframe, model_type, predicted_column, grain_column=None,
                  original_column_names=None, verbose=False):
@@ -61,7 +59,7 @@ class AdvancedSupervisedModelTrainer(object):
     @property
     def is_classification(self):
         """
-        Returns True if trainer is set up for classification
+        Returns True if trainer is set up for classification.
         
         Easy check to consolidate magic strings in all the model type switches.
         """
@@ -70,7 +68,7 @@ class AdvancedSupervisedModelTrainer(object):
     @property
     def is_regression(self):
         """
-        Returns True if trainer is set up for regression
+        Returns True if trainer is set up for regression.
         
         Easy check to consolidate magic strings in all the model type switches.
         """
@@ -103,8 +101,7 @@ class AdvancedSupervisedModelTrainer(object):
 
     def ensemble_classification(self, scoring_metric='roc_auc', trained_model_by_name=None):
         """
-        This provides a simple way to put data in and have healthcare.ai train a few models and pick the best one for
-        your data.
+        Provide a simple way to put data in and have healthcare.ai train a few models and pick the best model.
 
         Args:
             scoring_metric (str): The metric used to rank the models. Defaults to 'roc_auc'
@@ -153,7 +150,7 @@ class AdvancedSupervisedModelTrainer(object):
 
     def validate_score_metric_for_number_of_classes(self, metric):
         """
-        Check that a user's choice of scoring metric makes sense with the number of prediction classes
+        Check that a user's choice of scoring metric makes sense with the number of prediction classes.
 
         Args:
             metric (str): a string of the scoring metric
@@ -191,14 +188,11 @@ class AdvancedSupervisedModelTrainer(object):
 
         return performance_metrics
 
-    def logistic_regression(self,
-                            scoring_metric='roc_auc',
-                            hyperparameter_grid=None,
-                            randomized_search=True,
+    def logistic_regression(self, scoring_metric='roc_auc', hyperparameter_grid=None, randomized_search=True,
                             number_iteration_samples=10):
-        """
-        A light wrapper for Sklearn's logistic regression that performs randomized search over an overideable default
-        hyperparameter grid.
+        """ Wrapper for sklearn's logistic regression.
+
+        Performs randomized search over a default hyperparameter grid.
 
         Args:
             scoring_metric (str): Any sklearn scoring metric appropriate for regression
@@ -230,9 +224,9 @@ class AdvancedSupervisedModelTrainer(object):
                           hyperparameter_grid=None,
                           randomized_search=True,
                           number_iteration_samples=2):
-        """
-        A light wrapper for Sklearn's linear regression that performs randomized search over an overridable default
-        hyperparameter grid.
+        """ Wrapper for sklearn's linear regression.
+
+        Performs randomized search over a default hyperparameter grid.
         
         Args:
             scoring_metric (str): Any sklearn scoring metric appropriate for regression
@@ -263,9 +257,9 @@ class AdvancedSupervisedModelTrainer(object):
                          hyperparameter_grid=None,
                          randomized_search=True,
                          number_iteration_samples=2):
-        """
-        A light wrapper for Sklearn's lasso regression that performs randomized search over an overridable default
-        hyperparameter grid.
+        """ Wrapper for sklearn's lasso regression.
+
+        Performs randomized search over a default hyperparameter grid.
 
         Args:
             scoring_metric (str): Any sklearn scoring metric appropriate for regression
@@ -297,9 +291,9 @@ class AdvancedSupervisedModelTrainer(object):
             hyperparameter_grid=None,
             randomized_search=True,
             number_iteration_samples=10):
-        """
-        A light wrapper for Sklearn's knn classifier that performs randomized search over an overridable default
-        hyperparameter grid.
+        """ Wrapper for sklearn's knn classifier.
+
+        Performs randomized search over a default hyperparameter grid.
         
         Args:
             scoring_metric (str): Any sklearn scoring metric appropriate for classification
@@ -334,9 +328,9 @@ class AdvancedSupervisedModelTrainer(object):
                                  hyperparameter_grid=None,
                                  randomized_search=True,
                                  number_iteration_samples=5):
-        """
-        A light wrapper for Sklearn's random forest classifier that performs randomized search over an overridable
-        default hyperparameter grid.
+        """ Wrapper for sklearn's random_forest classifier.
+
+        Performs randomized search over a default hyperparameter grid.
         
         Args:
             trees (int): number of trees to use if not performing a randomized grid search
@@ -373,9 +367,9 @@ class AdvancedSupervisedModelTrainer(object):
                                 hyperparameter_grid=None,
                                 randomized_search=True,
                                 number_iteration_samples=5):
-        """
-        A light wrapper for Sklearn's random forest regressor that performs randomized search over an overridable
-        default hyperparameter grid.
+        """ Wrapper for sklearn's random forest regressor.
+
+        Performs randomized search over a default hyperparameter grid.
         
         Args:
             trees (int): number of trees to use if not performing a randomized grid search
@@ -408,7 +402,7 @@ class AdvancedSupervisedModelTrainer(object):
 
     def _create_trained_supervised_model(self, algorithm, include_factor_model=True):
         """
-        Trains an algorithm, prepares metrics, builds and returns a TrainedSupervisedModel
+        Trains an algorithm, prepares metrics, builds and returns a TrainedSupervisedModel.
 
         Args:
             algorithm (sklearn.base.BaseEstimator): The scikit learn algorithm, ready to fit.
