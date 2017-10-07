@@ -5,7 +5,7 @@ from azure.common import AzureMissingResourceHttpError
 
 
 class AzureBlobStorageHelper:
-    """Azure Blob Storage Helper
+    """Azure Blob Storage Helper.
 
     This class helps you store blobs on Azure's Blob Storage Service.
 
@@ -32,7 +32,7 @@ class AzureBlobStorageHelper:
 
     def __init__(self, account_name, account_key):
         """
-        Instantiate with your Azure account name and account key
+        Instantiate with your Azure account name and account key.
 
         :param account_name: account name
         :param account_key: account key
@@ -47,7 +47,7 @@ class AzureBlobStorageHelper:
 
     def save_text_blob(self, blob, blob_name, container):
         """
-        Saves a blob of text to azure
+        Saves a blob of text to azure.
 
         :param blob: the blob of text
         :param blob_name: the name of the file on the container
@@ -58,7 +58,7 @@ class AzureBlobStorageHelper:
 
     def save_object_as_pickle(self, object_to_pickle, blob_name, container):
         """
-        Save an object as a pickle file to azure
+        Save an object as a pickle file to azure.
 
         :param object_to_pickle: the object you want pickled 'n shipped
         :param blob_name: the name of the file on the container
