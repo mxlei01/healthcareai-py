@@ -17,9 +17,8 @@ def count_unique_elements_in_column(dataframe, column_name):
 
 def calculate_random_forest_mtry_hyperparameter(number_of_columns, model_type):
     """
-    Calculates a reasonable list of mtry hyperparameters (Number of variables available for splitting at each tree node.)
-    for Random Forest algorithms based on the given number of columns and
-    model type
+    Calculates a reasonable list of mtry hyperparameters (Number of variables available for splitting at
+    each tree node.) for Random Forest algorithms based on the given number of columns and model type
     :param number_of_columns: integer
     :param model_type: 'classification' or 'regression'
     :return: a list of 3 mtry integer parameters
@@ -48,10 +47,10 @@ def extract_estimator_from_meta_estimator(model):
     """
     Given an instance of a trained sklearn estimator, return the main estimator, regardless of random search
     Args:
-        model (sklearn.base.BaseEstimator): 
+        model (sklearn.base.BaseEstimator):
 
     Returns:
-        sklearn.base.BaseEstimator: 
+        sklearn.base.BaseEstimator:
     """
     if not issubclass(type(model), sklearn.base.BaseEstimator):
         raise HealthcareAIError('This requires an instance of sklearn.base.BaseEstimator')
@@ -68,10 +67,10 @@ def get_hyperparameters_from_meta_estimator(model):
     """
     Given an instance of a trained sklearn estimator, return the best hyperparameters if it is a meta estimator
     Args:
-        model (sklearn.base.BaseEstimator): 
+        model (sklearn.base.BaseEstimator):
 
     Returns:
-        dict: The best hyperparameters 
+        dict: The best hyperparameters
     """
     if not issubclass(type(model), sklearn.base.BaseEstimator):
         raise HealthcareAIError('This requires an instance of sklearn.base.BaseEstimator')

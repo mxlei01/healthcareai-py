@@ -18,7 +18,7 @@ def get_algorithm(estimator,
             through.
         randomized_search (bool): Whether the method should return a randomized search estimator (as opposed to a
             simple algorithm).
-        number_iteration_samples (int): If performing randomized search, this is the number of samples that are run in 
+        number_iteration_samples (int): If performing randomized search, this is the number of samples that are run in
             the hyperparameter space. Higher numbers will be slower, but end up with better results, since it is more
             likely that the true optimal hyperparameter is found.
         **non_randomized_estimator_kwargs: Keyword arguments that you can pass directly to the algorithm. Only used when

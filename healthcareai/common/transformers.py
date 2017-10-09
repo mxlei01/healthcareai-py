@@ -12,6 +12,7 @@ from sklearn.preprocessing import StandardScaler
 
 
 class DataFrameImputer(TransformerMixin):
+
     """
     Impute missing values in a dataframe.
 
@@ -92,6 +93,7 @@ class DataFrameConvertTargetToBinary(TransformerMixin):
 
 
 class DataFrameCreateDummyVariables(TransformerMixin):
+
     """Convert all categorical columns into dummy/indicator variables. Exclude given columns."""
 
     def __init__(self, excluded_columns=None):
@@ -116,6 +118,7 @@ class DataFrameCreateDummyVariables(TransformerMixin):
 
 
 class DataFrameConvertColumnToNumeric(TransformerMixin):
+
     """Convert a column into numeric variables."""
 
     def __init__(self, column_name):
@@ -132,6 +135,7 @@ class DataFrameConvertColumnToNumeric(TransformerMixin):
 
 
 class DataFrameUnderSampling(TransformerMixin):
+
     """
     Performs undersampling on a dataframe.
     
@@ -177,6 +181,7 @@ class DataFrameUnderSampling(TransformerMixin):
 
 
 class DataFrameOverSampling(TransformerMixin):
+
     """
     Performs oversampling on a dataframe.
 
@@ -222,6 +227,7 @@ class DataFrameOverSampling(TransformerMixin):
 
 
 class DataFrameDropNaN(TransformerMixin):
+
     """Remove NaN values. Columns that are NaN or None are removed."""
 
     def __init__(self):
@@ -237,6 +243,7 @@ class DataFrameDropNaN(TransformerMixin):
 
 
 class DataFrameFeatureScaling(TransformerMixin):
+
     """Scales numeric features. Columns that are numerics are scaled, or otherwise specified."""
 
     def __init__(self, columns_to_scale=None, reuse=None):

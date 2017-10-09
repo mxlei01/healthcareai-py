@@ -10,6 +10,7 @@ from healthcareai.common.get_categorical_levels import get_categorical_levels
 
 
 class SupervisedModelTrainer(object):
+
     """Train supervised models.
 
     This class trains models using several common classifiers and regressors and
@@ -207,6 +208,7 @@ class SupervisedModelTrainer(object):
 
 
 class ContextManagerModel(object):
+
     """A tiny class used by the `model_training` context manager."""
 
     def __init__(self, model_name, trained_model=None):

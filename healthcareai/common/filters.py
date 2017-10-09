@@ -22,6 +22,7 @@ def is_dataframe(possible_dataframe):
 
 
 class DataframeColumnSuffixFilter(TransformerMixin):
+
     """Given a pandas dataframe, remove columns with suffix 'DTS'."""
 
     def __init__(self):
@@ -41,6 +42,7 @@ class DataframeColumnSuffixFilter(TransformerMixin):
 
 
 class DataFrameColumnDateTimeFilter(TransformerMixin):
+
     """Given a pandas dataframe, remove any columns that has the type datetime."""
 
     def __init__(self):
@@ -57,6 +59,7 @@ class DataFrameColumnDateTimeFilter(TransformerMixin):
 
 
 class DataframeColumnRemover(TransformerMixin):
+
     """Given a pandas dataframe, remove the given column or columns in list form."""
 
     def __init__(self, columns_to_remove):
@@ -79,6 +82,7 @@ class DataframeColumnRemover(TransformerMixin):
 
 
 class DataframeNullValueFilter(TransformerMixin):
+
     """Given a pandas dataframe, remove rows that contain null values in any column except the excluded."""
 
     def __init__(self, excluded_columns=None):

@@ -25,7 +25,7 @@ def compute_roc(y_test, probability_predictions):
         probability_predictions (list) : predictions coming from an ML algorithm of length n.
 
     Returns:
-        dict: 
+        dict:
 
     """
     _validate_predictions_and_labels_are_equal_length(probability_predictions, y_test)
@@ -62,7 +62,7 @@ def compute_pr(y_test, probability_predictions):
         probability_predictions (list) : predictions coming from an ML algorithm of length n.
 
     Returns:
-        dict: 
+        dict:
 
     """
     _validate_predictions_and_labels_are_equal_length(probability_predictions, y_test)
@@ -249,7 +249,7 @@ def plot_random_forest_feature_importance(trained_random_forest, x_train, featur
     Given a random forest estimator, an x_train array, the feature names save or display a feature importance plot.
     
     Args:
-        trained_random_forest (sklearn.ensemble.RandomForestClassifier or sklearn.ensemble.RandomForestRegressor): 
+        trained_random_forest (sklearn.ensemble.RandomForestClassifier or sklearn.ensemble.RandomForestRegressor):
         x_train (numpy.array): A 2D numpy array that was used for training 
         feature_names (list): Column names in the x_train set
         feature_limit (int): Number of features to display on graph

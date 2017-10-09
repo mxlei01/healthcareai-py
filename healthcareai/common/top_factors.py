@@ -27,12 +27,12 @@ def top_k_features(dataframe, linear_model, k=3):
     Note k must be greater than or equal to the number of features in the model.
 
     Args:
-        dataframe (pandas.core.frame.DataFrame): The dataframe for which to score top features 
+        dataframe (pandas.core.frame.DataFrame): The dataframe for which to score top features
         linear_model (sklearn.base.BaseEstimator): A pre-fit scikit learn model instance that has linear coefficients.
         k (int): k lists of top features (the first list is the top features, the second list are the #2 features, etc)
 
     Returns:
-        (pandas.core.frame.DataFrame): The top features for each row in dataframe format 
+        (pandas.core.frame.DataFrame): The top features for each row in dataframe format
 
     """
     # Basic validation for number of features vs column count

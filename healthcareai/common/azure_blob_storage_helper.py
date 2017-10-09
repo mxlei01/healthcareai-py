@@ -5,6 +5,7 @@ from azure.common import AzureMissingResourceHttpError
 
 
 class AzureBlobStorageHelper:
+
     """Azure Blob Storage Helper.
 
     This class helps you store blobs on Azure's Blob Storage Service.

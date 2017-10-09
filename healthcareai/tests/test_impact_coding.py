@@ -7,6 +7,7 @@ from healthcareai.common.impact_coding import impact_coding_on_a_single_column
 
 
 class TestImpactCoding(unittest.TestCase):
+
     """Test impact coding.
 
     a) column is being re-named correctly

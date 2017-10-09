@@ -13,11 +13,11 @@ def table_archiver(server, database, source_table, destination_table, timestamp_
     This should build a new table if the table doesn't exist.
 
     Args:
-        server (str): Server name 
-        database (str): Database name 
-        source_table (str): Source table name 
-        destination_table (str): Destination table name 
-        timestamp_column_name (str): New timestamp column name 
+        server (str): Server name
+        database (str): Database name
+        source_table (str): Source table name
+        destination_table (str): Destination table name
+        timestamp_column_name (str): New timestamp column name
 
     Returns:
         (str): A string with details on records archived.

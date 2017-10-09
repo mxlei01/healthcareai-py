@@ -19,7 +19,7 @@ SUPPORTED_MODEL_TYPES = ['classification', 'regression']
 
 class AdvancedSupervisedModelTrainer(object):
 
-    """ Create a model using common classifiers and regressors, both of which report appropriate metrics."""
+    """Create a model using common classifiers and regressors, both of which report appropriate metrics."""
 
     def __init__(self, dataframe, model_type, predicted_column, grain_column=None,
                  original_column_names=None, verbose=False):

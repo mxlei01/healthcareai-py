@@ -16,6 +16,7 @@ from healthcareai.common.healthcareai_error import HealthcareAIError
 
 
 class TrainedSupervisedModel(object):
+
     """
     The meta-object that is created when training supervised models.
     
@@ -49,8 +50,8 @@ class TrainedSupervisedModel(object):
         
         Args:
             model (sklearn.base.BaseEstimator): The fit scikit learn algorithm for prediction
-            feature_model (sklearn.base.BaseEstimator): The fit scikit learn algorithm for feature importance 
-            fit_pipeline (sklearn.pipeline.Pipeline): A fit pipeline for use on cleaning new raw data 
+            feature_model (sklearn.base.BaseEstimator): The fit scikit learn algorithm for feature importance
+            fit_pipeline (sklearn.pipeline.Pipeline): A fit pipeline for use on cleaning new raw data
             model_type (str): 'classification' or 'regression'
             column_names (list): List of column names used as features
             grain_column (str): Grain column (not used as a feature).
@@ -316,7 +317,7 @@ class TrainedSupervisedModel(object):
         """
         Create a dataframe containing the original data, predictions and factors.
 
-        Given a prediction dataframe, build and return a dataframe with the all the original columns, the predictions, 
+        Given a prediction dataframe, build and return a dataframe with the all the original columns, the predictions,
         and the top k features.
 
         Args:
@@ -349,7 +350,7 @@ class TrainedSupervisedModel(object):
             dataframe (pandas.core.frame.DataFrame): Raw prediction dataframe
 
         Returns:
-            pandas.core.frame.DataFrame:  
+            pandas.core.frame.DataFrame:
         """
         # Get predictions and on the top 3 features (catalyst SAMs expect 3 factors)
         factors_and_predictions_df = self.make_predictions_with_k_factors(dataframe, number_top_features=3)
@@ -612,8 +613,8 @@ def tsm_classification_comparison_plots(trained_supervised_models, plot_type='RO
     Given a single or list of trained supervised models, plot a ROC or PR curve for each one.
     
     Args:
-        plot_type (str): 'ROC' (default) or 'PR' 
-        trained_supervised_models (TrainedSupervisedModel): a single or iterable containing TrainedSupervisedModels 
+        plot_type (str): 'ROC' (default) or 'PR'
+        trained_supervised_models (TrainedSupervisedModel): a single or iterable containing TrainedSupervisedModels
         save (bool): Save the plot to a file
     """
     # Input validation and dispatch
@@ -653,7 +654,7 @@ def plot_rf_features_from_tsm(trained_supervised_model, x_train, feature_limit=1
     
     Args:
         trained_supervised_model (TrainedSupervisedModel):
-        x_train (numpy.array): A 2D numpy array that was used for training 
+        x_train (numpy.array): A 2D numpy array that was used for training
         feature_limit (int): The maximum number of features to plot
         save (bool): True to save the plot, false to display it in a blocking thread
     """

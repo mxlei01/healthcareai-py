@@ -10,7 +10,7 @@ def predict_regression(x_test, trained_estimator):
     Given feature data and a trained estimator, return a regression prediction
 
     Args:
-        x_test: 
+        x_test:
         trained_estimator (sklearn.base.BaseEstimator): a trained scikit-learn estimator
 
     Returns:
@@ -26,7 +26,7 @@ def predict_classification(x_test, trained_estimator):
     Given feature data and a trained estimator, return a classification prediction
 
     Args:
-        x_test: 
+        x_test:
         trained_estimator (sklearn.base.BaseEstimator): a trained scikit-learn estimator
 
     Returns:
@@ -42,7 +42,7 @@ def predict_regression_from_pickle(x_test, pickle_filename):
     Given feature data and the filename of a pickled trained estimator, return a prediction
 
     Args:
-        x_test: 
+        x_test:
         pickle_filename (str): Name of file
 
     Returns:

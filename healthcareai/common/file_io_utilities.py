@@ -9,8 +9,8 @@ def save_dict_object_to_json(dictionary, filename):
     Save a dictionary object as json
 
     Args:
-        dictionary (dict): the dictionary to save as a JSON file 
-        filename (str): file name to save the JSON to 
+        dictionary (dict): the dictionary to save as a JSON file
+        filename (str): file name to save the JSON to
     """
     _validate_filename_is_string(filename)
 
@@ -38,7 +38,7 @@ def load_pickle_file(filename):
     Loads a python object of any type from a pickle file with the given filename
 
     Args:
-        filename (str): File name to load 
+        filename (str): File name to load
 
     Returns:
         (object): A python object
@@ -58,7 +58,7 @@ def load_saved_model(filename, debug=True):
     Convenience method for a simple API without users needing to know what pickling is. Also prints model metadata
     
     Args:
-        filename (str): name of saved file to laod 
+        filename (str): name of saved file to load
         debug (bool): Print debug output to console by default
 
     Returns:

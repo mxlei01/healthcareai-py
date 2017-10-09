@@ -9,6 +9,7 @@ import healthcareai.common.cardinality_checks as cardinality
 
 
 class TestCalculateCardinality(unittest.TestCase):
+
     """Test `calculate_cardinality()` method."""
 
     def setUp(self):
@@ -39,6 +40,7 @@ class TestCalculateCardinality(unittest.TestCase):
 
 
 class TestCardinalityThreshold(unittest.TestCase):
+
     """Test `cardinality_threshold_filter()` method."""
 
     def setUp(self):
@@ -81,6 +83,7 @@ class TestCardinalityThreshold(unittest.TestCase):
 
 
 class TestZeroCardinalityFilter(unittest.TestCase):
+
     """Test `cardinality_threshold_filter()` method."""
 
     def setUp(self):
