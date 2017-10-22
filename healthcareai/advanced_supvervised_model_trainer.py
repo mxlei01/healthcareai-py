@@ -1,6 +1,7 @@
 import sklearn
 import numpy as np
 import time
+from functools import partial
 
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.linear_model import LinearRegression, LogisticRegression, Lasso
@@ -60,7 +61,7 @@ class AdvancedSupervisedModelTrainer(object):
         self.pipeline = None
         self.original_column_names = original_column_names
         self.categorical_column_info = None
-
+        self._console_log = partial(print, "AdvancedSupervisedModelTrainer :: ") if verbose else lambda *a, **k: None
         self._console_log(
             'Shape and top 5 rows of original dataframe:\n{}\n{}'.format(self.dataframe.shape, self.dataframe.head()))
 
@@ -483,7 +484,3 @@ class AdvancedSupervisedModelTrainer(object):
         """
         if not self.is_classification:
             raise HealthcareAIError('A {} model can only be trained with a classification trainer.'.format(model_name))
-
-    def _console_log(self, message):
-        if self.verbose:
-            print('AdvancedSupervisedModelTrainer :: {}'.format(message))
